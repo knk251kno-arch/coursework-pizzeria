@@ -18,6 +18,10 @@
             <label for="password">Пароль (від 6 знаків):</label>
             <input type="password" name="password" id="password" class="form-control" style="max-width: 100%;" required>
         </div>
+        <div class="form-group" style="background: #fff3cd; padding: 10px; border-radius: 4px; border: 1px solid #ffeeba;">
+            <label for="secret_code" style="color: #856404;">Секретний код доступу шефа *</label>
+            <input type="password" name="secret_code" id="secret_code" class="form-control" style="max-width: 100%; border-color: #ffeeba;" placeholder="Введіть код для реєстрації адмінів" required>
+        </div>
         <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Створити обліковий запис</button>
     </form>
     <p style="margin-top: 20px; text-align: center; font-size: 14px; color: #666;">

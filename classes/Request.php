@@ -13,7 +13,14 @@ class Request
         if (strpos($uri, $scriptPath) === 0) {
             $uri = substr($uri, strlen($scriptPath));
         }
-        return '/' . trim(explode('?', $uri), '/');
+        
+        // Надежно отсекаем знак ? и все GET-параметры после него
+        $position = strpos($uri, '?');
+        if ($position !== false) {
+            $uri = substr($uri, 0, $position);
+        }
+        
+        return '/' . trim($uri, '/');
     }
 
     public function getParam(string $key, $default = null) 

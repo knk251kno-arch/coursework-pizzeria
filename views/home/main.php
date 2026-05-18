@@ -12,6 +12,15 @@
                 <?php foreach ($pizzas as $pizza): ?>
                     <div class="menu-item">
                         <div>
+                            <!-- Блок відображення картинки піци -->
+                            <div style="width: 100%; height: 180px; overflow: hidden; border-radius: 6px; margin-bottom: 15px; background: #eee;">
+                                <?php if ($pizza['image']): ?>
+                                    <img src="<?= htmlspecialchars($pizza['image']) ?>" alt="<?= htmlspecialchars($pizza['name']) ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                                <?php else: ?>
+                                    <div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 48px; background: #f5f5f5;">🍕</div>
+                                <?php endif; ?>
+                            </div>
+
                             <h3>🍕 <?= htmlspecialchars($pizza['name']) ?></h3>
                             <p style="color: #666; font-size: 14px; margin-bottom: 8px;">
                                 <strong>Склад:</strong> <?= htmlspecialchars($pizza['ingredients']) ?>
@@ -39,7 +48,6 @@
             <h3>Швидке замовлення</h3>
             <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Оберіть страву з меню та заповніть контактні дані.</p>
             
-            <!-- Повідомлення про статус замовлення -->
             <div id="order-status" style="display: none;"></div>
 
             <form id="checkout-form">

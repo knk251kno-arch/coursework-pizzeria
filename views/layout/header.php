@@ -12,7 +12,7 @@
         <div class="logo">🍕 Pizzeria Admin Pro</div>
         <nav class="main-nav">
             <a href="./">Головна & Меню</a>
-            <a href="gallery">Фотогалерея</a>
+            <a href="gallery">Відгуки клієнтів</a>
             <a href="news">Акції та Новини</a>
             
             <?php if (isset($_SESSION['user_id'])): ?>

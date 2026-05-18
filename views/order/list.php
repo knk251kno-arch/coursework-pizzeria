@@ -1,6 +1,10 @@
 <h2>Система керування замовленнями (Модуль 3) 🛒</h2>
 <p style="margin-bottom: 20px; color: #666;">Поточні замовлення від клієнтів, які надійшли асинхронно через JSON/AJAX. Керуйте етапами приготування та доставки страв.</p>
 
+<?php if (!empty($success)): ?>
+    <div class="success-box" style="margin-bottom: 20px;"><?= htmlspecialchars($success) ?></div>
+<?php endif; ?>
+
 <?php if (!empty($orders)): ?>
     <table style="width: 100%; border-collapse: collapse;">
         <thead>
@@ -10,7 +14,7 @@
                 <th>Клієнт</th>
                 <th>Контакти</th>
                 <th>Адреса доставки</th>
-                <th>Страва та ціна</th>
+                <th>Страва, розмір та ціна</th>
                 <th>Статус</th>
                 <th style="text-align: center;">Дії</th>
             </tr>
@@ -25,6 +29,7 @@
                     <td style="font-size: 14px; color: #444;"><?= htmlspecialchars($order['address']) ?></td>
                     <td>
                         <span style="color: #e64a19; font-weight: bold;">🍕 <?= htmlspecialchars($order['pizza_name']) ?></span>
+                        <br><span style="font-size: 12px; color: #555;">Розмір: <?= htmlspecialchars($order['pizza_size']) ?></span>
                         <br><span style="font-size: 13px; color: #777;"><?= number_format($order['pizza_price'], 2) ?> грн</span>
                     </td>
                     <td>
@@ -35,12 +40,14 @@
                     </td>
                     <td style="text-align: center; font-size: 14px;">
                         <?php if ($order['status'] === 'new'): ?>
-                            <a href="order?action=update_status&id=<?= $order['id'] ?>&status=cooking" style="color: #ff5722; text-decoration: none; font-weight: bold; margin-right: 10px;">Взяти в роботу</a>
+                            <a href="order?action=update_status&id=<?= $order['id'] ?>&status=cooking" style="color: #ff5722; text-decoration: none; font-weight: bold; margin-right: 15px;">В роботу</a>
                         <?php echo " "; endif; ?>
                         
                         <?php if ($order['status'] === 'cooking'): ?>
-                            <a href="order?action=update_status&id=<?= $order['id'] ?>&status=delivered" style="color: #2e7d32; text-decoration: none; font-weight: bold; margin-right: 10px;">Доставлено</a>
+                            <a href="order?action=update_status&id=<?= $order['id'] ?>&status=delivered" style="color: #2e7d32; text-decoration: none; font-weight: bold; margin-right: 15px;">Доставлено</a>
                         <?php echo " "; endif; ?>
+
+                        <a href="order?action=delete&id=<?= $order['id'] ?>" onclick="return confirm('Видалити це замовлення з архіву?');" style="color: #d32f2f; text-decoration: none; font-size: 13px; font-weight: bold;">🗑️ Видалити</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

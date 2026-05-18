@@ -19,10 +19,13 @@ class AuthController extends Controller
             $login = trim($this->request->getParam('login', ''));
             $email = trim($this->request->getParam('email', ''));
             $password = $this->request->getParam('password', '');
+            $secret_code = trim($this->request->getParam('secret_code', ''));
 
             if ($this->request->getMethod() === 'POST') {
-                if ($login === '' || $email === '' || $password === '') {
-                    $error = "Усі поля є обов'язковими!";
+                if ($login === '' || $email === '' || $password === '' || $secret_code === '') {
+                    $error = "Усі поля, включаючи секретний код доступу, є обов'язковими!";
+                } elseif ($secret_code !== 'PIZZA2026') { // Твій секретний пароль для реєстрації адмінів
+                    $error = "Невірний секретний код доступу! Реєстрація заблокована.";
                 } elseif (strlen($password) < 6) {
                     $error = "Пароль має бути не менше 6 символів!";
                 } else {
@@ -50,7 +53,7 @@ class AuthController extends Controller
             return;
         }
 
-        // Авторизация (Вход)
+        // Авторизація
         if ($this->request->getParam('registered') === '1') {
             $success = "Реєстрація успішна! Тепер ви можете увійти.";
         }

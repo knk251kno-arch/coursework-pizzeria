@@ -5,14 +5,13 @@ class OrderController extends Controller
     {
         $db = Database::getConnection();
         $action = $this->request->getParam('action', 'list');
+        $error = '';
+        $success = '';
 
         // 1. АСИНХРОННЕ СТВОРЕННЯ ЗАМОВЛЕННЯ (JSON / AJAX)
         if ($action === 'create' && $this->request->getMethod() === 'POST') {
-            // Очищуємо буфер виводу, щоб випадкові відступи не зламали JSON-відповідь
             ob_clean();
             header('Content-Type: application/json; charset=utf-8');
-
-            // Отримуємо розпарсений JSON з об'єкта Request
             $data = $this->request->getJsonData();
 
             $pizzaId     = isset($data['pizza_id']) ? (int)$data['pizza_id'] : 0;
@@ -20,47 +19,44 @@ class OrderController extends Controller
             $clientPhone = isset($data['client_phone']) ? trim($data['client_phone']) : '';
             $address     = isset($data['address']) ? trim($data['address']) : '';
 
-            // Валідація отриманих даних
             if ($pizzaId <= 0 || $clientName === '' || $clientPhone === '' || $address === '') {
-                echo json_encode([
-                    'status' => 'error',
-                    'message' => 'Будь ласка, заповніть усі обов\'язкові поля форми!'
-                ]);
+                echo json_encode(['status' => 'error', 'message' => 'Будь ласка, заповніть усі обов\'язкові поля!']);
                 exit;
             }
 
             try {
-                // Записуємо нове замовлення в базу даних
                 $stmt = $db->prepare("INSERT INTO orders (pizza_id, client_name, client_phone, address) VALUES (:pizza_id, :client_name, :client_phone, :address)");
-                $stmt->execute([
-                    'pizza_id' => $pizzaId,
-                    'client_name' => $clientName,
-                    'client_phone' => $clientPhone,
-                    'address' => $address
-                ]);
-
-                // Повертаємо клієнту успішну JSON-відповідь
-                echo json_encode([
-                    'status' => 'success',
-                    'message' => 'Дякуємо! Ваше замовлення успішно прийнято в обробку.'
-                ]);
+                $stmt->execute(['pizza_id' => $pizzaId, 'client_name' => $clientName, 'client_phone' => $clientPhone, 'address' => $address]);
+                echo json_encode(['status' => 'success', 'message' => 'Дякуємо! Ваше замовлення успішно прийнято в обробку.']);
                 exit;
             } catch (PDOException $e) {
-                echo json_encode([
-                    'status' => 'error',
-                    'message' => 'Помилка збереження в базу даних: ' . $e->getMessage()
-                ]);
+                echo json_encode(['status' => 'error', 'message' => 'Помилка бази даних: ' . $e->getMessage()]);
                 exit;
             }
         }
 
-        // ЗАХИСТ АДМІН-ПАНЕЛІ ДЛЯ ВСІХ ІНШИХ ДІЙ
+        // ЗАХИСТ АДМІНКИ
         if (!isset($_SESSION['user_id'])) {
             header("Location: auth?action=login");
             exit;
         }
 
-        // 2. ЗМІНА СТАТУСУ ЗАМОВЛЕННЯ В АДМІНЦІ
+        // 2. ВИДАЛЕННЯ ЗАМОВЛЕННЯ З ІСТОРІЇ
+        if ($action === 'delete') {
+            $id = (int)$this->request->getParam('id', 0);
+            if ($id > 0) {
+                try {
+                    $stmt = $db->prepare("DELETE FROM orders WHERE id = :id");
+                    $stmt->execute(['id' => $id]);
+                    header("Location: order?success=deleted");
+                    exit;
+                } catch (PDOException $e) {
+                    die("Помилка видалення замовлення: " . $e->getMessage());
+                }
+            }
+        }
+
+        // 3. ЗМІНА СТАТУСУ ЗАМОВЛЕННЯ
         if ($action === 'update_status') {
             $orderId = (int)$this->request->getParam('id', 0);
             $newStatus = $this->request->getParam('status', 'new');
@@ -77,11 +73,13 @@ class OrderController extends Controller
             exit;
         }
 
-        // 3. ПЕРЕГЛЯД СПИСКУ ЗАМОВЛЕНЬ ПЕРСОНАЛОМ (Адмінка замовлень)
+        $msg = $this->request->getParam('success', '');
+        if ($msg === 'deleted') $success = "Замовлення успішно видалено з архіву системи.";
+
+        // 4. ПЕРЕГЛЯД СПИСКУ ЗАМОВЛЕНЬ (Додали p.size)
         $orders = [];
         try {
-            // Використовуємо JOIN, щоб вивести назву піци разом із замовленням
-            $sql = "SELECT o.*, p.name as pizza_name, p.price as pizza_price 
+            $sql = "SELECT o.*, p.name as pizza_name, p.price as pizza_price, p.size as pizza_size 
                     FROM orders o 
                     JOIN pizzas p ON o.pizza_id = p.id 
                     ORDER BY o.id DESC";
@@ -91,6 +89,6 @@ class OrderController extends Controller
             die("Помилка завантаження замовлень: " . $e->getMessage());
         }
 
-        $this->view->renderPage('order/list', ['orders' => $orders], 'Керування замовленнями');
+        $this->view->renderPage('order/list', ['orders' => $orders, 'success' => $success], 'Керування замовленнями');
     }
 }
