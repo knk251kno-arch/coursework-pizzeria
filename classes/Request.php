@@ -14,7 +14,7 @@ class Request
             $uri = substr($uri, strlen($scriptPath));
         }
         
-        // Надежно отсекаем знак ? и все GET-параметры после него
+  
         $position = strpos($uri, '?');
         if ($position !== false) {
             $uri = substr($uri, 0, $position);

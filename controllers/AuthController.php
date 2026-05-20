@@ -24,7 +24,7 @@ class AuthController extends Controller
             if ($this->request->getMethod() === 'POST') {
                 if ($login === '' || $email === '' || $password === '' || $secret_code === '') {
                     $error = "Усі поля, включаючи секретний код доступу, є обов'язковими!";
-                } elseif ($secret_code !== 'PIZZA2026') { // Твій секретний пароль для реєстрації адмінів
+                } elseif ($secret_code !== 'PIZZA2026') { 
                     $error = "Невірний секретний код доступу! Реєстрація заблокована.";
                 } elseif (strlen($password) < 6) {
                     $error = "Пароль має бути не менше 6 символів!";

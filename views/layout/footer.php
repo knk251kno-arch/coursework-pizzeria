@@ -1,7 +1,7 @@
 </main>
 <footer class="site-footer">
     <div class="footer-container">
-        <p>&copy; <?= date('Y') ?> Pizzeria Admin Pro. Курсова робота з розробки СMS/MVC систем.</p>
+        <p>&copy; <?= date('Y') ?> Pizzeria</p>
     </div>
 </footer>
 <!-- Підключення JS для асинхронних JSON-запитів -->

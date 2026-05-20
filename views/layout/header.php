@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($title) ?> — Pizzeria Admin Pro</title>
+    <title><?= htmlspecialchars($title) ?> — Pizzeria</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <header class="site-header">
     <div class="header-container">
-        <div class="logo">🍕 Pizzeria Admin Pro</div>
+        <div class="logo">🍕 Pizzeria</div>
         <nav class="main-nav">
             <a href="./">Головна & Меню</a>
             <a href="gallery">Відгуки клієнтів</a>
