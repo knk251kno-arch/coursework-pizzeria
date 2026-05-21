@@ -8,7 +8,7 @@ class OrderController extends Controller
         $error = '';
         $success = '';
 
-        // 1. АСИНХРОННЕ СТВОРЕННЯ ЗАМОВЛЕННЯ (JSON / AJAX)
+
         if ($action === 'create' && $this->request->getMethod() === 'POST') {
             ob_clean();
             header('Content-Type: application/json; charset=utf-8');
@@ -35,13 +35,13 @@ class OrderController extends Controller
             }
         }
 
-        // ЗАХИСТ АДМІНКИ
+
         if (!isset($_SESSION['user_id'])) {
             header("Location: auth?action=login");
             exit;
         }
 
-        // 2. ВИДАЛЕННЯ ЗАМОВЛЕННЯ З ІСТОРІЇ
+
         if ($action === 'delete') {
             $id = (int)$this->request->getParam('id', 0);
             if ($id > 0) {
@@ -56,7 +56,7 @@ class OrderController extends Controller
             }
         }
 
-        // 3. ЗМІНА СТАТУСУ ЗАМОВЛЕННЯ
+
         if ($action === 'update_status') {
             $orderId = (int)$this->request->getParam('id', 0);
             $newStatus = $this->request->getParam('status', 'new');
@@ -76,7 +76,7 @@ class OrderController extends Controller
         $msg = $this->request->getParam('success', '');
         if ($msg === 'deleted') $success = "Замовлення успішно видалено з архіву системи.";
 
-        // 4. ПЕРЕГЛЯД СПИСКУ ЗАМОВЛЕНЬ (Додали p.size)
+
         $orders = [];
         try {
             $sql = "SELECT o.*, p.name as pizza_name, p.price as pizza_price, p.size as pizza_size 

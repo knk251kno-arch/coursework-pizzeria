@@ -8,7 +8,7 @@ class GalleryController extends Controller
         $success = '';
         $action = $this->request->getParam('action', 'list');
 
-        // 1. ВИДАЛЕННЯ ВІДГУКУ (Тільки для адміна)
+
         if ($action === 'delete') {
             if (!isset($_SESSION['user_id'])) {
                 header("Location: auth?action=login");
@@ -28,7 +28,7 @@ class GalleryController extends Controller
             }
         }
 
-        // 2. ОБРОБКА ВІДПРАВКИ НОВОГО ВІДГУКУ (Доступно всім)
+
         if ($this->request->getMethod() === 'POST') {
             $clientName = trim($this->request->getParam('client_name', ''));
             $commentText = trim($this->request->getParam('comment_text', ''));
@@ -50,12 +50,12 @@ class GalleryController extends Controller
             }
         }
 
-        // Статусні повідомлення
+
         $msg = $this->request->getParam('success', '');
         if ($msg === 'created') $success = "Дякуємо! Ваш відгук успішно опубліковано.";
         if ($msg === 'deleted') $success = "Відгук успішно видалено модератором.";
 
-        // Завантаження всіх відгуків для виведення
+
         $reviews = [];
         try {
             $stmt = $db->query("SELECT * FROM gallery ORDER BY id DESC");

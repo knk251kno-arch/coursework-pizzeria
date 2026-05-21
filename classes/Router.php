@@ -2,12 +2,12 @@
 class Router 
 {
     private array $routes = [
-        '/' => 'HomeController',            // Головна та замовлення
-        '/pizza' => 'PizzaController',        // Адмінка: CRUD Піц
-        '/auth' => 'AuthController',          // Персонал: Вхід/Реєстрація
-        '/order' => 'OrderController',        // Асинхронне замовлення та адмінка замовлень
-        '/news' => 'NewsController',          // Акції: CRUD Новин
-        '/gallery' => 'GalleryController'     // Фотогалерея страв
+        '/' => 'HomeController',            
+        '/pizza' => 'PizzaController',        
+        '/auth' => 'AuthController',          
+        '/order' => 'OrderController',        
+        '/news' => 'NewsController',          
+        '/gallery' => 'GalleryController'     
     ];
 
     public function resolve(Request $request): string 

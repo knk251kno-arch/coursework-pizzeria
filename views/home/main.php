@@ -4,7 +4,7 @@
 </div>
 
 <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
-    <!-- Ліва частина: Вітрина страв -->
+
     <div>
         <h2>Наше Меню</h2>
         <?php if (!empty($pizzas)): ?>
@@ -12,7 +12,7 @@
                 <?php foreach ($pizzas as $pizza): ?>
                     <div class="menu-item">
                         <div>
-                            <!-- Блок відображення картинки піци -->
+
                             <div style="width: 100%; height: 180px; overflow: hidden; border-radius: 6px; margin-bottom: 15px; background: #eee;">
                                 <?php if ($pizza['image']): ?>
                                     <img src="<?= htmlspecialchars($pizza['image']) ?>" alt="<?= htmlspecialchars($pizza['name']) ?>" style="width: 100%; height: 100%; object-fit: cover;">
@@ -42,7 +42,7 @@
         <?php endif; ?>
     </div>
 
-    <!-- Права частина: Асинхронна форма замовлення -->
+
     <div>
         <div style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-top: 4px solid #ff5722; position: sticky; top: 20px;">
             <h3>Швидке замовлення</h3>

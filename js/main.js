@@ -1,9 +1,9 @@
-// Автоматичний вибір піци при кліку на кнопку в меню
+
 function selectPizza(id, name) {
     const selectElement = document.getElementById('pizza_select');
     if (selectElement) {
         selectElement.value = id;
-        // Візуальний фокус на форму
+
         selectElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
         selectElement.style.backgroundColor = '#fff3cd';
         setTimeout(() => {
@@ -12,22 +12,22 @@ function selectPizza(id, name) {
     }
 }
 
-// Обробка форми замовлення після завантаження сторінки
+
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('checkout-form');
     const statusBox = document.getElementById('order-status');
 
     if (form) {
         form.addEventListener('submit', function (e) {
-            e.preventDefault(); // Скасовуємо перезавантаження сторінки
+            e.preventDefault(); 
 
-            // Збираємо дані з полів форми
+
             const pizzaId = document.getElementById('pizza_select').value;
             const clientName = document.getElementById('client_name').value.trim();
             const clientPhone = document.getElementById('client_phone').value.trim();
             const address = document.getElementById('address').value.trim();
 
-            // Формуємо об'єкт для відправки
+
             const requestData = {
                 pizza_id: pizzaId,
                 client_name: clientName,
@@ -35,13 +35,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 address: address
             };
 
-            // Приховуємо попередній статус та вимикаємо кнопку під час відправки
+
             statusBox.style.display = 'none';
             const submitBtn = form.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
             submitBtn.innerText = 'Відправка...';
 
-            // Виконуємо асинхронний FETCH запит на сервер з передачею JSON
+
             fetch('order?action=create', {
                 method: 'POST',
                 headers: {
@@ -53,18 +53,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!response.ok) {
                     throw new Error('Помилка сервера');
                 }
-                return response.json(); // Очікуємо JSON відповідь
+                return response.json();
             })
             .then(data => {
                 statusBox.style.display = 'block';
                 
                 if (data.status === 'success') {
-                    // Виводимо зелений успішний бокс
+
                     statusBox.className = 'success-box';
                     statusBox.innerHTML = `<strong>✨ ${data.message}</strong>`;
-                    form.reset(); // Очищуємо форму
+                    form.reset();
                 } else {
-                    // Виводимо червоний бокс помилки
+
                     statusBox.className = 'error-box';
                     statusBox.innerHTML = `<strong>⚠️ Помилка:</strong> ${data.message}`;
                 }
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error(error);
             })
             .finally(() => {
-                // Повертаємо кнопку в початковий стан
+
                 submitBtn.disabled = false;
                 submitBtn.innerText = 'Надіслати замовлення';
             });

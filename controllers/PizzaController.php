@@ -3,7 +3,7 @@ class PizzaController extends Controller
 {
     public function execute(): void 
     {
-        // Захист модуля: керувати каталогом може лише авторизований персонал
+
         if (!isset($_SESSION['user_id'])) {
             header("Location: auth?action=login");
             exit;
@@ -14,12 +14,12 @@ class PizzaController extends Controller
         $error = '';
         $success = '';
 
-        // 1. ВИДАЛЕННЯ ПІЦИ
+
         if ($action === 'delete') {
             $id = (int)$this->request->getParam('id', 0);
             if ($id > 0) {
                 try {
-                    // Спочатку дізнаємося назву файлу картинки, щоб видалити її з диска
+
                     $stmt = $db->prepare("SELECT image FROM pizzas WHERE id = :id");
                     $stmt->execute(['id' => $id]);
                     $pizza = $stmt->fetch();
@@ -37,7 +37,7 @@ class PizzaController extends Controller
             }
         }
 
-        // 2. СТВОРЕННЯ ПІЦИ
+
         if ($action === 'create') {
             $pizza = ['name' => '', 'size' => 'середня', 'price' => '', 'ingredients' => '', 'weight_g' => ''];
 
@@ -56,7 +56,7 @@ class PizzaController extends Controller
                     $error = "Вага повинна бути додатним цілим числом!";
                 } else {
                     $imagePath = null;
-                    // Обробка завантаження картинки
+
                     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
                         $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
                         if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
@@ -88,7 +88,7 @@ class PizzaController extends Controller
             return;
         }
 
-        // 3. РЕДАКУВАННЯ ПІЦИ
+
         if ($action === 'edit') {
             $id = (int)$this->request->getParam('id', 0);
             try {
@@ -118,13 +118,13 @@ class PizzaController extends Controller
                     $error = "Вага повинна бути цілим додатним числом!";
                 } else {
                     $imagePath = $pizza['image'];
-                    // Якщо завантажено нову картинку, замінюємо її
+
                     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
                         $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
                         if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
                             $newImgName = uniqid('pizza_crud_', true) . '.' . $ext;
                             if (move_uploaded_file($_FILES['image']['tmp_name'], __DIR__ . '/../uploads/' . $newImgName)) {
-                                // Видаляємо стару картинку з диска
+
                                 if ($pizza['image'] && file_exists(__DIR__ . '/../' . $pizza['image'])) {
                                     unlink(__DIR__ . '/../' . $pizza['image']);
                                 }
@@ -155,7 +155,7 @@ class PizzaController extends Controller
             return;
         }
 
-        // 4. СПИСОК ПІЦ (Панель керування)
+
         $msg = $this->request->getParam('success', '');
         if ($msg === 'created') $success = "Страву успішно додано до меню!";
         if ($msg === 'updated') $success = "Дані піци успішно оновлено!";

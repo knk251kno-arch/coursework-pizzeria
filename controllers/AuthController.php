@@ -53,7 +53,7 @@ class AuthController extends Controller
             return;
         }
 
-        // Авторизація
+
         if ($this->request->getParam('registered') === '1') {
             $success = "Реєстрація успішна! Тепер ви можете увійти.";
         }

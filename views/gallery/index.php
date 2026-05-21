@@ -9,7 +9,7 @@
     <div class="success-box" style="margin-bottom: 20px;"><?= htmlspecialchars($success) ?></div>
 <?php endif; ?>
 
-<!-- Форма додавання відгуку (доступна для всіх відвідувачів) -->
+
 <div style="background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border: 1px solid #ddd; margin-bottom: 35px;">
     <h3>Залишити свій відгук</h3>
     <form action="gallery" method="POST" style="margin-top: 15px;">
@@ -36,7 +36,7 @@
                 </div>
                 <p style="font-size: 15px; color: #444; white-space: pre-line; margin-bottom: 10px;"><?= htmlspecialchars($review['image_path']) ?></p>
                 
-                <!-- Кнопка видалення: показується ТІЛЬКИ авторизованому адміну -->
+
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <div style="text-align: right; margin-top: 5px;">
                         <a href="gallery?action=delete&id=<?= $review['id'] ?>" 

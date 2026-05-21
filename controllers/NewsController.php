@@ -8,7 +8,7 @@ class NewsController extends Controller
         $error = '';
         $success = '';
 
-        // ВИДАЛЕННЯ НОВИНИ (Тільки для адміна)
+
         if ($action === 'delete') {
             if (!isset($_SESSION['user_id'])) {
                 header("Location: auth");
@@ -27,7 +27,7 @@ class NewsController extends Controller
             }
         }
 
-        // СТВОРЕННЯ НОВИНИ
+
         if ($action === 'create' && $this->request->getMethod() === 'POST') {
             if (!isset($_SESSION['user_id'])) {
                 header("Location: auth");
@@ -55,7 +55,7 @@ class NewsController extends Controller
         if ($msg === 'created') $success = "Новину успішно опубліковано!";
         if ($msg === 'deleted') $success = "Новину видалено модератором.";
 
-        // Завантаження всіх новин
+
         $newsList = [];
         try {
             $stmt = $db->query("SELECT * FROM news ORDER BY id DESC");

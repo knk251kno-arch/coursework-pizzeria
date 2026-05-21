@@ -28,7 +28,7 @@ class Request
         return $_GET[$key] ?? $_POST[$key] ?? $default;
     }
 
-    // Отримання асинхронних JSON даних (AJAX)
+
     public function getJsonData(): array 
     {
         $json = file_get_contents('php://input');
